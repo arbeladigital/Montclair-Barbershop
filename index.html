@@ -1,1 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://imgur.com/dp8QBzF.png">
+    <link rel="apple-touch-icon" href="https://imgur.com/dp8QBzF.png">
 
+    <!-- SEO Meta Tags -->
+    <title>Montclair Barbershop | Premium Men's Grooming in Montclair, NJ</title>
+    <meta name="description" content="Discover Montclair Barbershop in Montclair, NJ. Premium grooming services including signature fades, hot towel shaves, and beard sculpting.">
+    <meta name="keywords" content="Barbershop Montclair NJ, Montclair Barbershop, Men's Haircut Montclair, Master Barber NJ, Beard Trim Montclair, Hot Towel Shave">
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Tailwind & Lucide Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap');
+
+        :root {
+            --accent: #ffffff;
+            --dark: #050505;
+            --surface: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--dark);
+            color: #E5E5E5;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(5,5,5,0.4), rgba(5,5,5,0.95)),
+                        url('https://imgur.com/3pOiecs.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        @media (max-width: 768px) {
+            .hero-gradient {
+                background-attachment: scroll;
+            }
+        }
+
+        .glass-card {
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); }
+
+        /* Mobile Menu */
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
+        #mobile-menu.active { transform: translateX(0); }
+
+        /* Gallery Grid */
+        .mood-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 320px);
+            gap: 1.5rem;
+        }
+        .mood-item {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background-color: #111;
+        }
+        .mood-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+            filter: grayscale(0.4);
+        }
+        .mood-item:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0);
+        }
+        .mood-item-lg { grid-column: span 2; grid-row: span 2; }
+        
+        @media (max-width: 1024px) {
+            .mood-board {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+            .mood-item { height: 300px; }
+            .mood-item-lg { grid-column: span 2; height: 450px; }
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            filter: grayscale(1) invert(0.9) contrast(1.2);
+        }
+
+        .about-image-main {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border: 1px solid var(--glass-border);
+            filter: grayscale(0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-4 md:px-10 py-4 flex justify-between items-center glass-card border-b border-white/5">
+        <div class="flex items-center">
+            <img src="https://imgur.com/dp8QBzF.png" alt="Montclair Barbershop" class="h-8 md:h-10 w-auto">
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-[0.4em] font-semibold">
+            <a href="#about" class="hover:text-white transition-colors">Heritage</a>
+            <a href="#services" class="hover:text-white transition-colors">Services</a>
+            <a href="#gallery" class="hover:text-white transition-colors">Gallery</a>
+            <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-gray-200 transition-all uppercase">
+                Book Now
+            </button>
+            <button id="menu-toggle" class="md:hidden text-white p-1">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-black/95 flex flex-col items-center justify-center space-y-8 text-2xl font-serif">
+        <button id="menu-close" class="absolute top-6 right-6 text-white">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <a href="#about" class="mobile-link">Heritage</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#gallery" class="mobile-link">Gallery</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center text-center hero-gradient px-6 py-20">
+        <div class="max-w-5xl relative z-10">
+            <h1 id="hero-title" class="text-6xl md:text-9xl font-serif mb-6 leading-tight tracking-tighter">
+                Montclair<br><span class="italic font-light opacity-80">Barbershop</span>
+            </h1>
+            <p id="hero-sub" class="text-sm md:text-lg text-gray-300 mb-10 max-w-xl mx-auto font-light tracking-[0.3em] uppercase leading-loose">
+                NJ's Premier grooming destination for the modern individual.
+            </p>
+            <div id="hero-btns" class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="px-10 py-5 bg-white text-black font-bold rounded-sm tracking-widest hover:bg-gray-200 transition-colors uppercase text-[10px]">Secure Appointment</button>
+                <a href="#about" class="px-10 py-5 border border-white/20 hover:border-white transition-colors font-bold rounded-sm tracking-widest uppercase text-[10px]">Our Philosophy</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div class="relative reveal">
+                <img src="https://images.unsplash.com/photo-1512690196152-74472f1289df?auto=format&fit=crop&q=80&w=1000" alt="Craftsmanship" class="about-image-main rounded-sm grayscale">
+                <div class="absolute -bottom-6 -right-6 glass-card p-10 hidden md:block">
+                    <p class="text-5xl font-serif font-bold italic">Est.</p>
+                    <p class="text-[10px] uppercase tracking-[0.4em] font-bold mt-2">2018 Heritage</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <span class="text-gray-500 uppercase tracking-[0.5em] text-[10px] font-bold mb-6 block">Our Philosophy</span>
+                <h2 class="text-5xl md:text-6xl font-serif mb-10 italic">Crafting the Modern Man.</h2>
+                <div class="space-y-8 text-gray-400 leading-relaxed text-lg font-light">
+                    <p>
+                        Located in the heart of Montclair, <strong class="text-white">Montclair Barbershop</strong> stands as a testament to the enduring power of quality barbering. We curate identities for those who value precision.
+                    </p>
+                    <p>
+                        Every service includes a tailored consultation, our signature steam treatment, and a commitment to architectural excellence in grooming.
+                    </p>
+                    
+                    <div class="pt-10 flex items-center gap-16">
+                        <div>
+                            <p class="text-4xl font-serif text-white">Master</p>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-500 mt-2">Barber Team</p>
+                        </div>
+                        <div class="h-12 w-px bg-white/10"></div>
+                        <div>
+                            <p class="text-4xl font-serif text-white">Signature</p>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-500 mt-2">Experience</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-32 bg-[#030303]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-20 text-center">
+                <span class="text-gray-500 uppercase tracking-[0.6em] text-[10px] font-bold mb-4 block">Visual Identity</span>
+                <h2 class="text-5xl md:text-7xl font-serif italic">The Studio Gallery</h2>
+            </div>
+
+            <div class="mood-board">
+                <div class="mood-item mood-item-lg reveal">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1000" alt="Montclair Studio">
+                </div>
+                <div class="mood-item reveal">
+                    <img src="https://images.unsplash.com/photo-1621605815841-aa897af0665a?auto=format&fit=crop&q=80&w=600" alt="Precision Work">
+                </div>
+                <div class="mood-item reveal">
+                    <img src="https://images.unsplash.com/photo-1599351431247-f10b21ce5602?auto=format&fit=crop&q=80&w=600" alt="Detailing">
+                </div>
+                <div class="mood-item reveal">
+                    <img src="https://images.unsplash.com/photo-1517832606299-7ae9b720a186?auto=format&fit=crop&q=80&w=600" alt="Classic Tooling">
+                </div>
+                <div class="mood-item reveal">
+                    <img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?auto=format&fit=crop&q=80&w=600" alt="The Atmosphere">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="mb-20">
+            <span class="text-gray-500 uppercase tracking-[0.5em] text-[10px] font-bold mb-4 block italic">The Menu</span>
+            <h2 class="text-5xl md:text-6xl font-serif reveal italic">Refined Services</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass-card p-10 rounded-sm group hover:border-white/40 transition-all duration-500 reveal">
+                <h3 class="text-2xl mb-6 font-serif uppercase tracking-widest font-light">The<br><strong>Classic Cut</strong></h3>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed font-light">Custom hair design, invigorating wash, and a professional styling finish.</p>
+                <span class="text-white font-light text-2xl tracking-tighter">$50</span>
+            </div>
+            <div class="glass-card p-10 rounded-sm group hover:border-white/40 transition-all duration-500 reveal">
+                <h3 class="text-2xl mb-6 font-serif uppercase tracking-widest font-light">Hot Towel<br><strong>Shave</strong></h3>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed font-light">Steam treatment, straight razor precision, and soothing post-shave balm.</p>
+                <span class="text-white font-light text-2xl tracking-tighter">$40</span>
+            </div>
+            <div class="glass-card p-10 rounded-sm group hover:border-white/40 transition-all duration-500 reveal">
+                <h3 class="text-2xl mb-6 font-serif uppercase tracking-widest font-light">Beard<br><strong>Tailoring</strong></h3>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed font-light">Architectural shaping and razor line-up for the perfectly groomed beard.</p>
+                <span class="text-white font-light text-2xl tracking-tighter">$30</span>
+            </div>
+            <div class="glass-card p-10 rounded-sm group hover:border-white/40 transition-all duration-500 reveal">
+                <h3 class="text-2xl mb-6 font-serif uppercase tracking-widest font-light">The Full<br><strong>Session</strong></h3>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed font-light">The ultimate combination of a signature cut and luxury towel shave.</p>
+                <span class="text-white font-light text-2xl tracking-tighter">$110</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Visit Section -->
+    <section id="contact" class="py-32 bg-zinc-900/20">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-5xl md:text-7xl font-serif mb-20 text-center reveal italic">Visit the Studio</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Info -->
+                <div class="reveal space-y-12">
+                    <div class="flex items-start gap-6">
+                        <div class="p-4 bg-white/5 rounded-full text-white shrink-0"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                        <div>
+                            <h4 class="font-bold mb-2 text-[10px] uppercase tracking-[0.4em] text-gray-400">Location</h4>
+                            <p class="text-white text-xl font-light">123 Bloomfield Ave,<br>Montclair, NJ 07042</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-6">
+                        <div class="p-4 bg-white/5 rounded-full text-white shrink-0"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                        <div>
+                            <h4 class="font-bold mb-2 text-[10px] uppercase tracking-[0.4em] text-gray-400">Hours</h4>
+                            <ul class="text-gray-300 text-sm space-y-1">
+                                <li>Tue — Fri: 9am - 7pm</li>
+                                <li>Sat: 9am - 5pm</li>
+                                <li class="text-gray-600">Sun — Mon: Closed</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-6">
+                        <div class="p-4 bg-white/5 rounded-full text-white shrink-0"><i data-lucide="instagram" class="w-5 h-5"></i></div>
+                        <div>
+                            <h4 class="font-bold mb-2 text-[10px] uppercase tracking-[0.4em] text-gray-400">Social</h4>
+                            <p class="text-white">@montclairbarbershop</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Card -->
+                <div class="reveal glass-card p-12 rounded-sm border-white/5 flex flex-col justify-center text-center">
+                    <p class="text-gray-400 text-sm italic font-light mb-10">"The quality of your haircut is an investment in your personal brand."</p>
+                    <button class="w-full py-6 bg-white text-black text-[10px] font-black uppercase tracking-[0.5em] hover:bg-gray-200 transition-all">
+                        Secure Spot
+                    </button>
+                </div>
+
+                <!-- Map -->
+                <div class="relative h-[400px] lg:h-full rounded-sm overflow-hidden border border-white/10 reveal shadow-2xl map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3018.4140449021143!2d-74.21041880321043!3d40.8408325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2ffe8acd70ba5%3A0x6bd1432304e772c8!2sMontclair%20Barbershop!5e0!3m2!1sen!2sus!4v1770240979392!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-24 border-t border-white/5 text-center px-6">
+        <img src="https://imgur.com/dp8QBzF.png" alt="Logo" class="h-12 w-auto mx-auto mb-12 opacity-60">
+        <p class="text-[10px] text-gray-600 uppercase tracking-[0.5em] mb-4">&copy; 2024 Montclair Barbershop. Perfection Defined.</p>
+        <div class="flex justify-center space-x-10 text-gray-500">
+            <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+            <a href="#" class="hover:text-white transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Mobile Menu Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+        menuClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('active')));
+
+        // Animations
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.from("#hero-title", { duration: 2, y: 100, opacity: 0, ease: "expo.out" });
+            gsap.from("#hero-sub", { duration: 1.5, opacity: 0, y: 30, delay: 0.6, ease: "power2.out" });
+            gsap.from("#hero-btns", { duration: 1.5, opacity: 0, y: 20, delay: 1, ease: "power2.out" });
+
+            gsap.utils.toArray('.reveal').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: "top 85%" },
+                    opacity: 1, y: 0, duration: 1.2, ease: "power2.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
