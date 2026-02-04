@@ -133,12 +133,14 @@
         }
     </style>
 </head>
-<body>
+<body id="top">
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 px-4 md:px-10 py-3 flex justify-between items-center glass-card border-b border-white/5">
         <div class="flex items-center">
-            <img src="https://imgur.com/CenSI1E.png" alt="Montclair Barbershop" class="brand-logo">
+            <a href="#top" class="hover:opacity-80 transition-opacity">
+                <img src="https://imgur.com/CenSI1E.png" alt="Montclair Barbershop" class="brand-logo">
+            </a>
         </div>
         
         <div class="hidden lg:flex items-center space-x-8 text-[10px] uppercase tracking-[0.4em] font-semibold">
@@ -163,7 +165,9 @@
         <button id="menu-close" class="absolute top-6 right-6 text-white p-2">
             <i data-lucide="x" class="w-8 h-8"></i>
         </button>
-        <img src="https://imgur.com/CenSI1E.png" alt="Logo" class="brand-logo mb-10 h-24">
+        <a href="#top" class="mobile-link">
+            <img src="https://imgur.com/CenSI1E.png" alt="Logo" class="brand-logo mb-10 h-24">
+        </a>
         <a href="#about" class="mobile-link hover:italic">About Us</a>
         <a href="#barbers" class="mobile-link hover:italic">Barbers</a>
         <a href="#services" class="mobile-link hover:italic">Services</a>
@@ -381,7 +385,7 @@
         </div>
     </section>
 
-    <!-- Contact & Map restored -->
+    <!-- Contact & Map -->
     <section id="contact" class="py-24 md:py-32 bg-zinc-900/10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -410,7 +414,7 @@
                     </div>
                 </div>
 
-                <!-- Operating Hours restored -->
+                <!-- Operating Hours -->
                 <div class="reveal glass-card p-8 border-white/5">
                     <h4 class="font-bold mb-6 text-[10px] uppercase tracking-[0.4em] text-gray-500 border-b border-white/10 pb-4">Operating Hours</h4>
                     <div class="space-y-3">
@@ -445,7 +449,9 @@
 
     <!-- Footer -->
     <footer class="py-16 md:py-24 border-t border-white/5 text-center px-6">
-        <img src="https://imgur.com/CenSI1E.png" alt="Logo" class="brand-logo mx-auto mb-8 opacity-60">
+        <a href="#top" class="hover:opacity-80 transition-opacity inline-block">
+            <img src="https://imgur.com/CenSI1E.png" alt="Logo" class="brand-logo mx-auto mb-8 opacity-60">
+        </a>
         <div class="flex justify-center gap-6 mb-8 text-gray-500">
             <a href="https://www.yelp.com/biz/montclair-barbershop-montclair-2" target="_blank" class="hover:text-white transition-colors"><i data-lucide="external-link" class="w-5 h-5"></i></a>
             <a href="mailto:MONTCLAIRBARBERSHOP@GMAIL.COM" class="hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
